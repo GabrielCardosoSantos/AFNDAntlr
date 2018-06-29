@@ -15,12 +15,12 @@ grammar AFND;
  */
 
 
-expr: letra '=('alf ',' est ',' func ',' inicial ',' finais')';
-alf:'{'letra (',' letra)*'}';
-est:'{Q' NUM (',Q'NUM)*'}';
-func:'{' ;
-inicial: 'Q' NUM;
-finais: '{Q' NUM (',Q'NUM)*'}';
+expr: LETRA '=('alf ',' est  ',' inicial ',' finais')' # VExpr; 
+alf:'{'LETRA (',' LETRA)* '}'  # VAlf;
+est:'{Q' NUM (', Q' NUM)* '}' # VEst;
+func:'{' # VFunc ;
+inicial: 'Q' NUM # VInicial;
+finais: '{Q' NUM (', Q'NUM)*'}' # VFinais;
 
 
 
