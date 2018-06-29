@@ -7,10 +7,8 @@ namespace AFNDAntlr
 {
     class Program
     {
-        static void Main(string[] args)
-        {
-            string gramatica = "M=()";
-            string grammar = 
+        static void Main(string[] args){
+
         }
     }
 }

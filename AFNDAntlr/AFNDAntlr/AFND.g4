@@ -15,9 +15,9 @@ grammar AFND;
  */
 
 
-expr: M = (alf, est);
-alf:{letra (',' letra)*};
-est:{letra (',')};
+expr: 'M''=''('alf',' est')';
+alf:'{'letra (',' letra)*'}';
+est:'{'letra (',')'}';
 
 /*
  * Lexer Rules
