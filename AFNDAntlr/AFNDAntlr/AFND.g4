@@ -15,17 +15,23 @@ grammar AFND;
  */
 
 
-expr: M = (alf, est);
-alf:{letra (',' letra)*};
-est:{letra (',')};
+expr: letra '=('alf ',' est ',' func ',' inicial ',' finais')';
+alf:'{'letra (',' letra)*'}';
+est:'{Q' NUM (',Q'NUM)*'}';
+func:'{' ;
+inicial: 'Q' NUM;
+finais: '{Q' NUM (',Q'NUM)*'}';
+
+
+
 
 /*
  * Lexer Rules
  */
 
-
-LETRA: [a-Z] | [0-9];
+NUM: [0-9]+;
+LETRA: [A-Za-z] | [0-9];
 
 WS
-	:	' ' -> channel(HIDDEN)
-	;
+    :   (' ' | '\r' | '\n') -> channel(HIDDEN)
+    ;
