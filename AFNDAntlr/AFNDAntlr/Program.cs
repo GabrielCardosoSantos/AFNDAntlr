@@ -9,6 +9,8 @@ namespace AFNDAntlr
     {
         static void Main(string[] args)
         {
+            string gramatica = "M=()";
+            string grammar = 
         }
     }
 }

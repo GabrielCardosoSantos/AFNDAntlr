@@ -39,8 +39,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AFND.g4.lexer.cs">
+      <DependentUpon>AFND.g4</DependentUpon>
+    </Compile>
+    <Compile Include="AFND.g4.parser.cs">
+      <DependentUpon>AFND.g4</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Antlr4 Include="AFND.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>AFNDAntlr</CustomToolNamespace>
+    </Antlr4>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
