@@ -9,7 +9,7 @@ namespace AFNDAntlr
     {
         static void Main(string[] args)
         {
-            string stream = "M=({a, b}, {Q0, Q1}, {, Q0, {Q1, Q2})";
+            string stream = "M=({a, b}, {q0, q1}, T, q0, {q1, q2}) T={q0,a=q0; q1,b=q0; q2,c={q1,q2}}";
             AntlrInputStream input = new AntlrInputStream(stream);
             ITokenSource lexer = new AFNDLexer(input);
             ITokenStream token = new CommonTokenStream(lexer);
