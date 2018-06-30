@@ -15,13 +15,12 @@ grammar AFND;
  */
 
 
-expr: LETRA '=('alf ',' est  ',' inicial ',' finais')' # VExpr; 
-alf:'{'LETRA (',' LETRA)* '}'  # VAlf;
-est:'{Q' NUM (', Q' NUM)* '}' # VEst;
-func:'{' # VFunc ;
-inicial: 'Q' NUM # VInicial;
-finais: '{Q' NUM (', Q'NUM)*'}' # VFinais;
-
+expr: LETRA '=('alf ',' est ',' func ',' inicial',' finais')' # VExpr;
+alf:'{'LETRA (',' LETRA)* '}'   # VAlf;
+est:'{'ESTADO (',' ESTADO)* '}'   # VEst;
+func:'{'                        # VFunc ;
+inicial: ESTADO                 # VInicial;
+finais: '{'ESTADO (','ESTADO)*'}' # VFinais;
 
 
 
@@ -29,6 +28,7 @@ finais: '{Q' NUM (', Q'NUM)*'}' # VFinais;
  * Lexer Rules
  */
 
+ESTADO: 'Q' NUM;
 NUM: [0-9]+;
 LETRA: [A-Za-z] | [0-9];
 
