@@ -9,7 +9,13 @@ namespace AFNDAntlr
     {
         static void Main(string[] args)
         {
-            string stream = "M=({a, b}, {q0, q1, q2, q3}, T, q0, {q1, q2}) T={q0,a=q0; q1,b=q0; q2,c={q1,q2}}";
+            string stream;
+            using (StreamReader arq = new StreamReader("gramatica.txt")) {
+                stream = arq.ReadLine();
+            }
+
+            //M=({a, b}, {q0, q1, q2, q3}, T, q0, {q1, q2}) T={q0,a=q0; q1,b=q0; q2,c={q1,q2}}
+
             AntlrInputStream input = new AntlrInputStream(stream);
             ITokenSource lexer = new AFNDLexer(input);
             ITokenStream token = new CommonTokenStream(lexer);
@@ -20,7 +26,28 @@ namespace AFNDAntlr
             Console.WriteLine(tree.ToStringTree(parser));
             visitor.Visit(tree);
 
+            Estado q0 = new Estado("q0", false);
+            Estado q1 = new Estado("q1", true);
+            Estado q2 = new Estado("q2", false);
+            Estado q3 = new Estado("q3", false);
+
+
+            q0.addTransicao('a', q1);
+            
+            q1.addTransicao('a', q1);
+            q1.addTransicao('b', q1);
+
+            q0.addTransicao('a', q2);
+
+            q1.addTransicao('c', q3);
+            q3.addTransicao('a', q1);
+
+            q2.addTransicao('c', q1);
+
             Automato aut = new Automato();
+            aut.addInicial(q0);
+
+            aut.executar("acbaca");
 
 
 
