@@ -18,7 +18,6 @@ namespace AFNDAntlr
         public Estado(String nome)
         {
             dic = new Dictionary<char, List<Estado>>();
-            
             this.nome = nome;
         }
 

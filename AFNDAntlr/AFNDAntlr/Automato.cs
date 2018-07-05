@@ -19,7 +19,7 @@ namespace AFNDAntlr
         }
 
         public void avaliar(int i, Estado est){
-            if (i >= entrada.Length){
+            if (i > entrada.Length){
                 if (est.final){
                     reconhecida = true;
                 }
@@ -27,6 +27,7 @@ namespace AFNDAntlr
             }
               
             Console.WriteLine("Estado: " + est.getNome() + " Letra: " + entrada[i]);
+
             if (est.getDestino(entrada[i]) != null){
                 foreach (Estado e in est.getDestino(entrada[i])){
                     Console.WriteLine("Vai para: " + e.getNome());
