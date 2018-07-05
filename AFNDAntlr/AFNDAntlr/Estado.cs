@@ -20,7 +20,6 @@ namespace AFNDAntlr
             dic = new Dictionary<char, List<Estado>>();
             
             this.nome = nome;
-            this.final = final;
         }
 
         public void addTransicao(char c, Estado e)
