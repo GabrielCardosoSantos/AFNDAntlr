@@ -16,15 +16,15 @@ grammar AFND;
 
 
 expr: LETRA '=('alf ',' est ',' func ',' inicial',' finais')' tab # VExpr;
-alf:'{'LETRA (',' LETRA)* '}'   # VAlf;
-est:'{'ESTADO (',' ESTADO)* '}'   # VEst;
-func:'T'                        # VFunc ;
-inicial: ESTADO                 # VInicial;
-finais: '{'ESTADO (','ESTADO)*'}' # VFinais;
+alf:'{'LETRA (',' LETRA)* '}'                                     # VAlf;
+est:'{'ESTADO (',' ESTADO)* '}'                                   # VEst;
+func:'T'                                                          # VFunc ;
+inicial: ESTADO                                                   # VInicial;
+finais: '{'ESTADO (','ESTADO)*'}'                                 # VFinais;
 
-tab: 'T=''{'regra (';' regra)* '}'                        # VTab;
-regra: ESTADO ',' LETRA '=' ESTADO                        # Det
-	   | ESTADO ',' LETRA '=' '{'ESTADO (',' ESTADO)* '}' # Ndet
+tab: 'T=''{'regra (';' regra)* '}'                                # VTab;
+regra: ESTADO ',' LETRA '=' ESTADO                                # Det
+	   | ESTADO ',' LETRA '=' '{'ESTADO (',' ESTADO)* '}'         # Ndet 
 	   ;
 
 
