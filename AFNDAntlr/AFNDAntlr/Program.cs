@@ -2,6 +2,7 @@
 using Antlr4.Runtime.Tree;
 using Antlr4.Runtime;
 using System.IO;
+using System.Collections.Generic;
 
 namespace AFNDAntlr
 {
@@ -13,6 +14,7 @@ namespace AFNDAntlr
             using (StreamReader arq = new StreamReader("gramatica.txt")) {
                 stream = arq.ReadLine();
             }
+            List<Estado> est = new List<Estado>();
 
             //M=({a, b}, {q0, q1, q2, q3}, T, q0, {q1, q2}) T={q0,a=q0; q1,b=q0; q2,c={q1,q2}}
 
@@ -23,13 +25,17 @@ namespace AFNDAntlr
             parser.BuildParseTree = true;
             IParseTree tree = parser.expr();
             AFNDVisitor visitor = new AFNDVisitor();
+            visitor.iniciar();
             Console.WriteLine(tree.ToStringTree(parser));
             visitor.Visit(tree);
 
-            Estado q0 = new Estado("q0", false);
-            Estado q1 = new Estado("q1", true);
-            Estado q2 = new Estado("q2", false);
-            Estado q3 = new Estado("q3", false);
+            est = visitor.getEstados();
+
+
+            Estado q0 = new Estado("q0");
+            Estado q1 = new Estado("q1");
+            Estado q2 = new Estado("q2");
+            Estado q3 = new Estado("q3");
 
 
             q0.addTransicao('a', q1);

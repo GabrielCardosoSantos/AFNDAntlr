@@ -6,13 +6,16 @@ using Antlr4.Runtime;
 
 namespace AFNDAntlr
 {
-   
+    
     public class Estado{
+        
+
+
         private Dictionary<char, List<Estado>> dic;
         public bool final;
         private String nome;
 
-        public Estado(String nome, bool final)
+        public Estado(String nome)
         {
             dic = new Dictionary<char, List<Estado>>();
             
