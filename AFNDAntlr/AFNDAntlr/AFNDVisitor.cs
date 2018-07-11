@@ -92,9 +92,9 @@ namespace AFNDAntlr
         public override object VisitNdet([NotNull] AFNDParser.NdetContext context)
         {
             var est = context.ESTADO(2);
-            if (est != null) {
+            if (est != null)
+            {
                 automato.valido = true;
-                Console.WriteLine("Eh um AFND");
             }
             return base.VisitNdet(context);
         }

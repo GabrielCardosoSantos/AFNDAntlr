@@ -22,12 +22,14 @@ namespace AFNDAntlr
             alfabeto.Add(s);
         }
 
-        public void AddInicial(Estado est){
+        public void AddInicial(Estado est)
+        {
             inicial = est;
         }
 
         public void Avaliar(int i, Estado est){
-            if (i >= entrada.Length - 1){
+            if (i >= entrada.Length - 1)
+            {
                 if (est.final){
                     reconhecida = true;
                 }
@@ -36,7 +38,8 @@ namespace AFNDAntlr
               
             Console.WriteLine("Estado: " + est.getNome() + " Letra: " + entrada[i]);
 
-            if (est.getDestino(entrada[i]) != null){
+            if (est.getDestino(entrada[i]) != null)
+            {
                 foreach (Estado e in est.getDestino(entrada[i])){
                     Console.WriteLine("Vai para: " + e.getNome());
                     Avaliar(i + 1, e);
