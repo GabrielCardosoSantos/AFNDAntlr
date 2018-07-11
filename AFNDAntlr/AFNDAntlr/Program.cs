@@ -11,9 +11,8 @@ namespace AFNDAntlr
         static void Main(string[] args)
         {
             string stream;
-            List<Estado> estados;
-            Estado inicial;
-
+            Automato automato;
+            bool sair = false;
             using (StreamReader arq = new StreamReader("gramatica.txt"))
                 stream = arq.ReadLine();         
 
@@ -29,20 +28,32 @@ namespace AFNDAntlr
             Console.WriteLine(tree.ToStringTree(parser));
             visitor.Visit(tree);
 
-            Automato aut = visitor.GetAutomato();
-            if (aut.reconhecida)
+            automato = visitor.GetAutomato();
+
+            if (automato.valido)
             {
-                Console.WriteLine("Informe a a frase teste: ");
-                string s = Console.ReadLine();
-                aut.Executar(s);
+                Console.WriteLine("Automato valido.");
+                while (!sair)
+                {
+                    Console.WriteLine("Informe a a frase teste: (S para sair)");
+                    string s = Console.ReadLine();
+
+                    if (!s.Equals("S"))
+                    {
+                        automato.Executar(s);
+                    }
+                    else
+                    {
+                        sair = true;
+                    }
+                }
             }
-            
+            else
+            {
+                Console.WriteLine("Automato inválido.");
+            }
 
-
-
-            Console.ReadKey();
-            
-            
+            Console.ReadKey();            
         }
     }
 }

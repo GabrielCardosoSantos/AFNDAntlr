@@ -6,10 +6,11 @@ using System.Text;
 namespace AFNDAntlr
 {
     public class Automato{
-        Estado inicial;
+        public Estado inicial;
         List<string> alfabeto;
         String entrada;
         public bool reconhecida;
+        public bool valido;
 
         public Automato(){
             reconhecida = false;
@@ -26,7 +27,7 @@ namespace AFNDAntlr
         }
 
         public void Avaliar(int i, Estado est){
-            if (i >= entrada.Length){
+            if (i >= entrada.Length - 1){
                 if (est.final){
                     reconhecida = true;
                 }

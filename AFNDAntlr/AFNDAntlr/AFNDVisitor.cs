@@ -42,8 +42,13 @@ namespace AFNDAntlr
             var est = context.GetText();
             string s = est.Trim(new Char[] { '{', '}' });
             String[] split = s.Split(',');
+
             foreach (string s1 in split)
-                Console.WriteLine(s1);
+            {
+                Estado e = estados.Find(n => n.getNome().Equals(s1));
+                e.final = true;
+            }
+                
 
             return base.VisitVFinais(context);
         }
@@ -54,25 +59,33 @@ namespace AFNDAntlr
             //q1,b = q0
             var est = context.GetText();
             string[] split = est.Split(new char[] { ',', '=', ' ' });
-            Console.WriteLine(split);
-            //Estado e = estados.Find(n => n.getNome().Equals(split[0]));
+            
+            Estado e = estados.Find(n => n.getNome().Equals(split[0]));
 
-            /*if(e != null)
-                e.addTransicao(split[1][0], new Estado(split[2]));
-            if(inicial != null)
+            if(e != null)
             {
-                if (inicial.getNome().Equals(split[0]))
+                if (automato.inicial.getNome().Equals(e.getNome()))
                 {
-                    inicial.addTransicao(split[1][0], new Estado(split[2]));
+                    automato.inicial.addTransicao(split[1][0], estados.Find(n => n.getNome().Equals(split[2])));
                 }
-            }*/
-            return base.VisitDet(context);
+                else
+                {
+                    e.addTransicao(split[1][0], estados.Find(n => n.getNome().Equals(split[2])));
+                }
+                return base.VisitDet(context);
+            }
+            else
+            {
+                Console.WriteLine("Erro no automato.");
+                return null;
+            }
+
         }
 
         public override object VisitVInicial([NotNull] AFNDParser.VInicialContext context)
         {
             var est = context.GetText();
-            automato.AddInicial(new Estado(est));
+            automato.AddInicial(estados.Find(n => n.getNome().Equals(est)));
             return base.VisitVInicial(context);
         }
 
@@ -80,6 +93,7 @@ namespace AFNDAntlr
         {
             var est = context.ESTADO(2);
             if (est != null) {
+                automato.valido = true;
                 Console.WriteLine("Eh um AFND");
             }
             return base.VisitNdet(context);
