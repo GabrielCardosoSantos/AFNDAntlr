@@ -7,70 +7,101 @@ using Antlr4.Runtime.Misc;
 namespace AFNDAntlr
 {
     public class AFNDVisitor : AFNDBaseVisitor<object>{
-
+        Automato automato = new Automato();
         List<Estado> estados = new List<Estado>();
-        String inicial;
-        List<String> finais = new List<String>();
+
+        public override object VisitVAlf([NotNull] AFNDParser.VAlfContext context)
+        {
+            var est = context.GetText();
+            string s = est.Trim(new Char[] { '{', '}' });
+            String[] split = s.Split(',');
+
+            foreach (String aux in split)
+                automato.AddAlfabeto(aux);
+            
+            return base.VisitVAlf(context);
+        }
 
         public override object VisitVEst([NotNull] AFNDParser.VEstContext context)
         {
-            var est = context.ESTADO(0);
-            for (int i = 0; est != null; i++){
-                
-                est = context.ESTADO(i);
-                if (est != null) {
-                    estados.Add(new Estado(est.ToString()));
-                }
+            // "{q0,q1,q2,q3}"
+            var est = context.GetText();
+            if (est != null)
+            {
+                string s = est.Trim(new Char[] { '{', '}' });
+                String[] split = s.Split(',');
+                foreach (string s1 in split)
+                    estados.Add(new Estado(s1));
             }
-
+            
             return base.VisitVEst(context);
         }
 
         public override object VisitVFinais([NotNull] AFNDParser.VFinaisContext context)
         {
-            var est = context.ESTADO(0);
-            for (int i = 0; est != null; i++) {
-                est = context.ESTADO(i);
-                if (est != null) {
-                    finais.Add(est.ToString());
-                }
+            var est = context.GetText();
+            string s = est.Trim(new Char[] { '{', '}' });
+            String[] split = s.Split(',');
+
+            foreach (string s1 in split)
+            {
+                Estado e = estados.Find(n => n.getNome().Equals(s1));
+                e.final = true;
             }
+                
 
             return base.VisitVFinais(context);
         }
 
+        public override object VisitDet([NotNull] AFNDParser.DetContext context)
+        {
+            //q0,a=q0
+            //q1,b = q0
+            var est = context.GetText();
+            string[] split = est.Split(new char[] { ',', '=', ' ' });
+            
+            Estado e = estados.Find(n => n.getNome().Equals(split[0]));
+
+            if(e != null)
+            {
+                if (automato.inicial.getNome().Equals(e.getNome()))
+                {
+                    automato.inicial.addTransicao(split[1][0], estados.Find(n => n.getNome().Equals(split[2])));
+                }
+                else
+                {
+                    e.addTransicao(split[1][0], estados.Find(n => n.getNome().Equals(split[2])));
+                }
+                return base.VisitDet(context);
+            }
+            else
+            {
+                Console.WriteLine("Erro no automato.");
+                return null;
+            }
+
+        }
+
         public override object VisitVInicial([NotNull] AFNDParser.VInicialContext context)
         {
-            var est = context.ESTADO();
-            inicial = est.ToString();
+            var est = context.GetText();
+            automato.AddInicial(estados.Find(n => n.getNome().Equals(est)));
             return base.VisitVInicial(context);
         }
 
         public override object VisitNdet([NotNull] AFNDParser.NdetContext context)
         {
             var est = context.ESTADO(2);
-            if (est != null) {
-                Console.WriteLine("Eh um AFND");
+            if (est != null)
+            {
+                automato.valido = true;
             }
-
             return base.VisitNdet(context);
         }
 
-  
-
-        public String GetInicial()
+        public Automato GetAutomato()
         {
-            return inicial;
-        }
-
-        public List<String> GetFinais()
-        {
-            return finais;
-        }
-
-        public List<Estado> GetEstados()
-        {
-            return estados;
+            return automato;
         }
     }
 }

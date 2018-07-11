@@ -11,10 +11,8 @@ namespace AFNDAntlr
         static void Main(string[] args)
         {
             string stream;
-            List<Estado> estados;
-            String inicial;
-            List<String> finais;
-
+            Automato automato;
+            bool sair = false;
             using (StreamReader arq = new StreamReader("gramatica.txt"))
                 stream = arq.ReadLine();         
 
@@ -29,38 +27,33 @@ namespace AFNDAntlr
             AFNDVisitor visitor = new AFNDVisitor();
             Console.WriteLine(tree.ToStringTree(parser));
             visitor.Visit(tree);
-         
-            estados = visitor.GetEstados();
-            inicial = visitor.GetInicial();
-            finais = visitor.GetFinais();
-            
-            foreach(String f in finais) {
-                foreach(Estado e in estados) {
-                    if(e.getNome() == f) {
-                        e.final = true;
+
+            automato = visitor.GetAutomato();
+
+            if (automato.valido)
+            {
+                Console.WriteLine("Automato valido.");
+                while (!sair)
+                {
+                    Console.WriteLine("Informe a a frase teste: (S para sair)");
+                    string s = Console.ReadLine();
+
+                    if (!s.Equals("S"))
+                    {
+                        automato.Executar(s);
+                    }
+                    else
+                    {
+                        sair = true;
                     }
                 }
             }
-
-            Automato aut = new Automato();
-
-            foreach(Estado e in estados) {
-                if(e.getNome() == inicial) {
-                    aut.addInicial(e);
-                }
+            else
+            {
+                Console.WriteLine("Automato inválido.");
             }
-            
-            
-            Console.WriteLine("Informe a frase teste: ");
-            string s = Console.ReadLine();
 
-            aut.executar(s);
-
-
-
-            Console.ReadKey();
-            
-            
+            Console.ReadKey();            
         }
     }
 }
