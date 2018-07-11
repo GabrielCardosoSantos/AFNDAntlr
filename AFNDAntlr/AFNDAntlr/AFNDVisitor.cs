@@ -9,38 +9,40 @@ namespace AFNDAntlr
     public class AFNDVisitor : AFNDBaseVisitor<object>{
 
         List<Estado> estados = new List<Estado>();
-        Estado inicial;
-        List<Estado> finais = new List<Estado>();
+        String inicial;
+        List<String> finais = new List<String>();
 
         public override object VisitVEst([NotNull] AFNDParser.VEstContext context)
         {
             var est = context.ESTADO(0);
-            if (est != null)
-            {
-                estados.Add(new Estado(est.GetText()));
-            }
-            for(int i=1;est != null; i++)
-            {
+            for (int i = 0; est != null; i++){
+                
                 est = context.ESTADO(i);
+                if (est != null) {
+                    estados.Add(new Estado(est.ToString()));
+                }
             }
+
             return base.VisitVEst(context);
         }
 
         public override object VisitVFinais([NotNull] AFNDParser.VFinaisContext context)
         {
-            var est = context.GetText();
-            string s = est.Trim(new Char[] { '{', '}' });
-            String[] split = s.Split(',');
-            foreach (string s1 in split)
-                finais.Add(new Estado(s1));
+            var est = context.ESTADO(0);
+            for (int i = 0; est != null; i++) {
+                est = context.ESTADO(i);
+                if (est != null) {
+                    finais.Add(est.ToString());
+                }
+            }
 
             return base.VisitVFinais(context);
         }
 
         public override object VisitVInicial([NotNull] AFNDParser.VInicialContext context)
         {
-            var est = context.GetText();
-            inicial = new Estado(est);
+            var est = context.ESTADO();
+            inicial = est.ToString();
             return base.VisitVInicial(context);
         }
 
@@ -50,19 +52,21 @@ namespace AFNDAntlr
             if (est != null) {
                 Console.WriteLine("Eh um AFND");
             }
+
             return base.VisitNdet(context);
         }
 
-        public Estado GetInicial()
+  
+
+        public String GetInicial()
         {
             return inicial;
         }
 
-        public List<Estado> GetFinais()
+        public List<String> GetFinais()
         {
             return finais;
         }
-
 
         public List<Estado> GetEstados()
         {

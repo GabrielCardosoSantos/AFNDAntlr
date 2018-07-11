@@ -18,8 +18,9 @@ namespace AFNDAntlr
             inicial = est;
         }
 
+
         public void avaliar(int i, Estado est){
-            if (i > entrada.Length){
+            if (i >= entrada.Length){
                 if (est.final){
                     reconhecida = true;
                 }

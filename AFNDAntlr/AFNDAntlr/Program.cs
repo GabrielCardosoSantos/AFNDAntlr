@@ -12,7 +12,8 @@ namespace AFNDAntlr
         {
             string stream;
             List<Estado> estados;
-            Estado inicial;
+            String inicial;
+            List<String> finais;
 
             using (StreamReader arq = new StreamReader("gramatica.txt"))
                 stream = arq.ReadLine();         
@@ -28,15 +29,29 @@ namespace AFNDAntlr
             AFNDVisitor visitor = new AFNDVisitor();
             Console.WriteLine(tree.ToStringTree(parser));
             visitor.Visit(tree);
-
+         
             estados = visitor.GetEstados();
             inicial = visitor.GetInicial();
+            finais = visitor.GetFinais();
             
+            foreach(String f in finais) {
+                foreach(Estado e in estados) {
+                    if(e.getNome() == f) {
+                        e.final = true;
+                    }
+                }
+            }
 
             Automato aut = new Automato();
-            aut.addInicial(inicial);
+
+            foreach(Estado e in estados) {
+                if(e.getNome() == inicial) {
+                    aut.addInicial(e);
+                }
+            }
             
-            Console.WriteLine("Informe a a frase teste: ");
+            
+            Console.WriteLine("Informe a frase teste: ");
             string s = Console.ReadLine();
 
             aut.executar(s);
