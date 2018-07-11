@@ -5,21 +5,28 @@ using System.Text;
 
 namespace AFNDAntlr
 {
-    class Automato{
+    public class Automato{
         Estado inicial;
+        List<string> alfabeto;
         String entrada;
-        bool reconhecida;
+        public bool reconhecida;
 
         public Automato(){
             reconhecida = false;
+            alfabeto = new List<string>();
         }
 
-        public void addInicial(Estado est){
+        public void AddAlfabeto(String s)
+        {
+            alfabeto.Add(s);
+        }
+
+        public void AddInicial(Estado est){
             inicial = est;
         }
 
-        public void avaliar(int i, Estado est){
-            if (i > entrada.Length){
+        public void Avaliar(int i, Estado est){
+            if (i >= entrada.Length){
                 if (est.final){
                     reconhecida = true;
                 }
@@ -31,17 +38,17 @@ namespace AFNDAntlr
             if (est.getDestino(entrada[i]) != null){
                 foreach (Estado e in est.getDestino(entrada[i])){
                     Console.WriteLine("Vai para: " + e.getNome());
-                    avaliar(i + 1, e);
+                    Avaliar(i + 1, e);
                 }
             }            
         }
 
-        public void executar(String entrada)
+        public void Executar(String entrada)
         {
             reconhecida = false;
             int i = 0;
             this.entrada = entrada;
-            avaliar(i, inicial);
+            Avaliar(i, inicial);
             if (reconhecida)
             {
                 Console.WriteLine("Palavra reconhecida");

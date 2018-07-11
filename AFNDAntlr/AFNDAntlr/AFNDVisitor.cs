@@ -7,22 +7,33 @@ using Antlr4.Runtime.Misc;
 namespace AFNDAntlr
 {
     public class AFNDVisitor : AFNDBaseVisitor<object>{
-
+        Automato automato = new Automato();
         List<Estado> estados = new List<Estado>();
-        Estado inicial;
-        List<Estado> finais = new List<Estado>();
+
+        public override object VisitVAlf([NotNull] AFNDParser.VAlfContext context)
+        {
+            var est = context.GetText();
+            string s = est.Trim(new Char[] { '{', '}' });
+            String[] split = s.Split(',');
+
+            foreach (String aux in split)
+                automato.AddAlfabeto(aux);
+            
+            return base.VisitVAlf(context);
+        }
 
         public override object VisitVEst([NotNull] AFNDParser.VEstContext context)
         {
-            var est = context.ESTADO(0);
+            // "{q0,q1,q2,q3}"
+            var est = context.GetText();
             if (est != null)
             {
-                estados.Add(new Estado(est.GetText()));
+                string s = est.Trim(new Char[] { '{', '}' });
+                String[] split = s.Split(',');
+                foreach (string s1 in split)
+                    estados.Add(new Estado(s1));
             }
-            for(int i=1;est != null; i++)
-            {
-                est = context.ESTADO(i);
-            }
+            
             return base.VisitVEst(context);
         }
 
@@ -32,15 +43,36 @@ namespace AFNDAntlr
             string s = est.Trim(new Char[] { '{', '}' });
             String[] split = s.Split(',');
             foreach (string s1 in split)
-                finais.Add(new Estado(s1));
+                Console.WriteLine(s1);
 
             return base.VisitVFinais(context);
+        }
+
+        public override object VisitDet([NotNull] AFNDParser.DetContext context)
+        {
+            //q0,a=q0
+            //q1,b = q0
+            var est = context.GetText();
+            string[] split = est.Split(new char[] { ',', '=', ' ' });
+            Console.WriteLine(split);
+            //Estado e = estados.Find(n => n.getNome().Equals(split[0]));
+
+            /*if(e != null)
+                e.addTransicao(split[1][0], new Estado(split[2]));
+            if(inicial != null)
+            {
+                if (inicial.getNome().Equals(split[0]))
+                {
+                    inicial.addTransicao(split[1][0], new Estado(split[2]));
+                }
+            }*/
+            return base.VisitDet(context);
         }
 
         public override object VisitVInicial([NotNull] AFNDParser.VInicialContext context)
         {
             var est = context.GetText();
-            inicial = new Estado(est);
+            automato.AddInicial(new Estado(est));
             return base.VisitVInicial(context);
         }
 
@@ -53,20 +85,9 @@ namespace AFNDAntlr
             return base.VisitNdet(context);
         }
 
-        public Estado GetInicial()
+        public Automato GetAutomato()
         {
-            return inicial;
-        }
-
-        public List<Estado> GetFinais()
-        {
-            return finais;
-        }
-
-
-        public List<Estado> GetEstados()
-        {
-            return estados;
+            return automato;
         }
     }
 }

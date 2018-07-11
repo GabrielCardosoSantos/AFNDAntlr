@@ -29,17 +29,14 @@ namespace AFNDAntlr
             Console.WriteLine(tree.ToStringTree(parser));
             visitor.Visit(tree);
 
-            estados = visitor.GetEstados();
-            inicial = visitor.GetInicial();
+            Automato aut = visitor.GetAutomato();
+            if (aut.reconhecida)
+            {
+                Console.WriteLine("Informe a a frase teste: ");
+                string s = Console.ReadLine();
+                aut.Executar(s);
+            }
             
-
-            Automato aut = new Automato();
-            aut.addInicial(inicial);
-            
-            Console.WriteLine("Informe a a frase teste: ");
-            string s = Console.ReadLine();
-
-            aut.executar(s);
 
 
 
