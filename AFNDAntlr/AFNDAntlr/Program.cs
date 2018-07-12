@@ -14,9 +14,14 @@ namespace AFNDAntlr
             Automato automato;
             bool sair = false;
             using (StreamReader arq = new StreamReader("gramatica.txt"))
-                stream = arq.ReadLine();         
+                stream = arq.ReadLine();
 
-            //M=({a, b}, {q0, q1, q2, q3}, T, q0, {q1, q2}) T={q0,a=q0; q1,b=q0; q2,c={q1,q2}}
+            //esta automato está no arquivo gramatica.txt
+            //M=({a, b}, {q0, q1, q2, q3}, T, q0, {q3}) T={q0,a={q0,q1}; q0,b={q0,q2}; q1,a=q3; q2,b=q3; q3,a=q3; q3,b=q3}
+            //possui aa ou bb como subpalavra
+
+            //M=({a, b}, {q0, q1, q2, q3}, T, q0, {q3}) T={q0,a={q0,q1}; q0,b=q0; q1,a=q2; q2,a=q3}
+            //reconhece a palavra que possui aaa como sufixo
 
             AntlrInputStream input = new AntlrInputStream(stream);
             ITokenSource lexer = new AFNDLexer(input);
@@ -35,7 +40,7 @@ namespace AFNDAntlr
                 Console.WriteLine("Automato valido.");
                 while (!sair)
                 {
-                    Console.WriteLine("Informe a a frase teste: (S para sair)");
+                    Console.WriteLine("Informe a frase teste: (S para sair)");
                     string s = Console.ReadLine();
 
                     if (!s.Equals("S"))

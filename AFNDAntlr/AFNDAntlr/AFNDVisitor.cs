@@ -47,6 +47,7 @@ namespace AFNDAntlr
             {
                 Estado e = estados.Find(n => n.getNome().Equals(s1));
                 e.final = true;
+                Console.WriteLine("Defini o estado " + e.getNome() + " como final.");
             }
                 
 
@@ -99,7 +100,7 @@ namespace AFNDAntlr
                 automato.valido = true;
             }
 
-            var origem = context.ESTADO(0);
+            /*var origem = context.ESTADO(0);
             char carac = context.LETRA().GetText()[0];
 
             int i = 1;
@@ -110,7 +111,7 @@ namespace AFNDAntlr
                     e.addTransicao(carac, estados.Find(n => n.getNome().Equals(dest.ToString())));
                 i++;
                 dest = context.ESTADO(i);
-            }
+            }*/
            
             return base.VisitNdet(context);
         }

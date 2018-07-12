@@ -17,6 +17,7 @@ namespace AFNDAntlr
         {
             dic = new Dictionary<char, List<Estado>>();
             this.nome = nome;
+            Console.WriteLine("Estado " + nome + " criado.");
         }
 
         public void addTransicao(char c, Estado e)
@@ -30,6 +31,7 @@ namespace AFNDAntlr
                 dic.Add(c, new List<Estado>());
                 dic[c].Add(e);
             }
+            Console.WriteLine("Criei transicao no " + nome + ". Caracter: " + c + " -> estado: " + e.getNome() + ".");
         }
 
         public List<Estado> getDestino(char carac)
