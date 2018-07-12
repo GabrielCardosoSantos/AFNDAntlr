@@ -96,6 +96,20 @@ namespace AFNDAntlr
             {
                 automato.valido = true;
             }
+
+            var origem = context.ESTADO(0);
+            char carac = context.LETRA().GetText()[0];
+
+            int i = 1;
+            var dest = context.ESTADO(i);
+            while (dest != null) {
+                Estado e = estados.Find(n => n.getNome().Equals(origem.ToString()));
+                if(e!=null)
+                    e.addTransicao(carac, estados.Find(n => n.getNome().Equals(dest.ToString())));
+                i++;
+                dest = context.ESTADO(i);
+            }
+           
             return base.VisitNdet(context);
         }
 
