@@ -14,6 +14,7 @@ namespace AFNDAntlr
 
         public Automato(){
             reconhecida = false;
+            valido = false;
             alfabeto = new List<string>();
         }
 

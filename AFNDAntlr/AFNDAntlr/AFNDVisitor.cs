@@ -64,14 +64,7 @@ namespace AFNDAntlr
 
             if(e != null)
             {
-                if (automato.inicial.getNome().Equals(e.getNome()))
-                {
-                    automato.inicial.addTransicao(split[1][0], estados.Find(n => n.getNome().Equals(split[2])));
-                }
-                else
-                {
-                    e.addTransicao(split[1][0], estados.Find(n => n.getNome().Equals(split[2])));
-                }
+                e.addTransicao(split[1][0], estados.Find(n => n.getNome().Equals(split[2])));   
                 return base.VisitDet(context);
             }
             else
@@ -91,9 +84,18 @@ namespace AFNDAntlr
 
         public override object VisitNdet([NotNull] AFNDParser.NdetContext context)
         {
-            var est = context.ESTADO(2);
+            var est = context.GetText();
             if (est != null)
             {
+                string[] split = est.Split(new char[] { '{', '}', ',', '=', ' ' });
+                Estado e = estados.Find(n => n.getNome().Equals(split[0]));
+                for (int i = 2; i < split.Length; i++)
+                {
+                    if (!String.IsNullOrEmpty(split[i]))
+                    {
+                        e.addTransicao(split[1][0], estados.Find(n => n.getNome().Equals(split[i])));
+                    }
+                }
                 automato.valido = true;
             }
 
